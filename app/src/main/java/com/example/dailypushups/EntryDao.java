@@ -1,6 +1,7 @@
 package com.example.dailypushups;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
@@ -17,5 +18,8 @@ public interface EntryDao {
 
     @Insert
     void insertEntry(Entry entry);
+
+    @Query("DELETE FROM ENTRY")
+    void deleteAllEntires();
 
 }

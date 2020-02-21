@@ -12,4 +12,7 @@ public class Entry {
 
     @ColumnInfo(name = "Pushups")
     public int pushups;
+
+    @ColumnInfo(name = "Date")
+    public String date;
 }
