@@ -46,7 +46,9 @@ public class ExerciseActivity extends AppCompatActivity {
 
             Log.d("tag", "insert started");
 
+            // om det inte finns några entries med dagens datum
             db.entryDao().insertEntry(entry);
+            //annars ska entrien med dagens datum uppdateras
 
             Log.d("tag", "insert finished");
 
