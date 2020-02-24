@@ -25,7 +25,7 @@ public class HistoryActivity extends AppCompatActivity {
         List<Entry> entries =  db.entryDao().getAll();
 
         for (Entry entry : entries)
-        
+
         {
 
             data.add(entry.date + " " + entry.pushups);

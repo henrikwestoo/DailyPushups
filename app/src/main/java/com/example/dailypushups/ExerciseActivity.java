@@ -1,21 +1,30 @@
 package com.example.dailypushups;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import java.time.LocalDate;
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class ExerciseActivity extends AppCompatActivity {
+
+    String todaysDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
+        todaysDate = LocalDate.now().toString();
     }
 
     public void saveToDb(View view){
@@ -23,21 +32,28 @@ public class ExerciseActivity extends AppCompatActivity {
         EditText numberOfPushupsET = (EditText) findViewById(R.id.NumberOfPushpsTxt);
         String numberOfPushups = numberOfPushupsET.getText().toString();
 
-        int numberOfPushupsInt = Integer.valueOf(numberOfPushups);
+        if(Validator.isInteger(numberOfPushups)) {
 
-        Log.d("tag", numberOfPushups);
+            int numberOfPushupsInt = Integer.valueOf(numberOfPushups);
 
-        EntryDatabase db = EntryDatabase.getDbInstance(this);
-        Entry entry = new Entry();
+            Log.d("tag", numberOfPushups);
 
-        entry.pushups = numberOfPushupsInt;
-        entry.date = "2020-02-21";
+            EntryDatabase db = EntryDatabase.getDbInstance(this);
+            Entry entry = new Entry();
 
-        Log.d("tag", "insert started");
+            entry.pushups = numberOfPushupsInt;
+            entry.date = todaysDate;
 
-        db.entryDao().insertEntry(entry);
+            Log.d("tag", "insert started");
 
-        Log.d("tag", "insert finished");
+            db.entryDao().insertEntry(entry);
+
+            Log.d("tag", "insert finished");
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
+        }
 
     }
 
@@ -45,16 +61,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
         EntryDatabase db = EntryDatabase.getDbInstance(this);
 
-        String number  = String.valueOf(db.entryDao().getLatest().pushups);
-        Log.d("tag", number);
-
-        List<Entry> entries =  db.entryDao().getAll();
-
-        for(Entry entry : entries){
-
-            Log.d("tag", String.valueOf(entry.id) + entry.pushups + entry.date);
-
-        }
+        db.entryDao().deleteAllEntires();
 
 
     }
