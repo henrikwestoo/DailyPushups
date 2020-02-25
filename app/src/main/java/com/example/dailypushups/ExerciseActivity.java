@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -139,6 +141,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
+                    vibrate();
                     timerTxt.setText("0:00");
                     toggleInputFieldVisibility(true);
                     timerRunning = false;
@@ -147,6 +150,16 @@ public class ExerciseActivity extends AppCompatActivity {
 
             }.start();
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void vibrate(){
+
+        //använder en vibrationeffect
+        Vibrator vibrator = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
+        VibrationEffect vibrationEffect = VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE);
+        vibrator.vibrate(vibrationEffect);
+
     }
 
 }
