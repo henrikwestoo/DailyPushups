@@ -19,20 +19,19 @@ import java.time.LocalDate;
 public class ExerciseActivity extends AppCompatActivity {
 
     //dagens datum
-    String todaysDate;
+    private String todaysDate;
 
-    boolean timerRunning;
-    CountDownTimer countDownTimer;
+    private boolean timerRunning;
+    private CountDownTimer countDownTimer;
+
+    private EntryDatabase db;
 
     //variabler för mina views (in order of appearance)
-    Button startTimerButton;
-    TextView timerTxt;
-    EditText numberOfPushupsET;
-    TextView infoTxt;
-    Button confirmButton;
-
-
-
+    private Button startTimerButton;
+    private TextView timerTxt;
+    private EditText numberOfPushupsET;
+    private TextView infoTxt;
+    private Button confirmButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +42,8 @@ public class ExerciseActivity extends AppCompatActivity {
 
         //hämta dagens datum
         todaysDate = LocalDate.now().toString();
+
+        db = EntryDatabase.getDbInstance(this);
 
         //tilldela värden till view-variabler
         startTimerButton = (Button) findViewById(R.id.startTimerBtn);
@@ -82,8 +83,6 @@ public class ExerciseActivity extends AppCompatActivity {
             int numberOfPushupsInt = Integer.valueOf(numberOfPushups);
 
             Log.d("tag", numberOfPushups);
-
-            EntryDatabase db = EntryDatabase.getDbInstance(this);
 
             Log.d("tag", "insert started");
 
