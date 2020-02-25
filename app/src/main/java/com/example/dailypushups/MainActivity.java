@@ -15,6 +15,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private EntryDatabase db;
+    private String todaysDate;
+
+    private TextView completedInfoTxt;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -22,27 +26,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String todaysDate = LocalDate.now().toString();
+        todaysDate = LocalDate.now().toString();
+        db = EntryDatabase.getDbInstance(this);
 
-        //databasinstansiering för att kontrollera gårdagens armhävningar
-        EntryDatabase db = EntryDatabase.getDbInstance(this);
+        completedInfoTxt = (TextView) findViewById(R.id.completedInfoTxt);
+
         Entry entry;
 
-        if(!db.entryDao().getAll().isEmpty()) {
+        if(dailyCompleted()){
 
-            if(db.entryDao().getLatest().date.equals(todaysDate))
-            {
-                entry = db.entryDao().getNextToLatest();
-            }
+            completedInfoTxt.setText("You have done your daily pushups!");
+            entry = db.entryDao().getNextToLatest();
 
-            else
-            {
-                entry = db.entryDao().getLatest();
-            }
-
-            TextView yesterdaysPushups = (TextView) findViewById(R.id.yesterdaysPushupsTxt);
-            yesterdaysPushups.setText(String.valueOf(entry.pushups));
         }
+        else{
+
+            entry = db.entryDao().getLatest();
+        }
+
+        TextView yesterdaysPushups = (TextView) findViewById(R.id.yesterdaysPushupsTxt);
+        yesterdaysPushups.setText(String.valueOf(entry.pushups));
 
     }
 
@@ -57,6 +60,20 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, HistoryActivity.class);
         startActivity(intent);
+
+    }
+
+    public boolean dailyCompleted(){
+
+        boolean completed = true;
+
+        if(db.entryDao().getSpecificEntry(todaysDate) == null){
+
+            completed = false;
+
+        }
+
+        return completed;
 
     }
 

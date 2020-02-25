@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">DailyPushups</string>
+    <string name="start">START</string>
+    <string name="_0">0</string>
+    <string name="you_have_not_done_any_pushups_today">You have not done any pushups today!</string>
+    <string name="start_timer">START TIMER</string>
+    <string name="_1_00">1:00</string>
+    <string name="number_of_pushups">Number of pushups</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="how_many_did_you_do">How many did you do?</string>
+    <string name="pushups">...pushups.</string>
+    <string name="welcome_back_last_time_you_did">Welcome back! Last time you did</string>
+    <string name="history">History</string>
 </resources>

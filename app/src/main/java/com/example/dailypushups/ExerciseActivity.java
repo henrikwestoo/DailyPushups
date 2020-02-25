@@ -48,11 +48,11 @@ public class ExerciseActivity extends AppCompatActivity {
         db = EntryDatabase.getDbInstance(this);
 
         //tilldela värden till view-variabler
-        startTimerButton = (Button) findViewById(R.id.startTimerBtn);
-        timerTxt = (TextView) findViewById(R.id.timerTxt);
-        numberOfPushupsET = (EditText) findViewById(R.id.numberOfPushpsTxt);
-        infoTxt = (TextView) findViewById(R.id.infoTxt);
-        confirmButton = (Button) findViewById(R.id.ConfirmBtn);
+        startTimerButton = findViewById(R.id.startTimerBtn);
+        timerTxt = findViewById(R.id.timerTxt);
+        numberOfPushupsET = findViewById(R.id.numberOfPushpsTxt);
+        infoTxt = findViewById(R.id.infoTxt);
+        confirmButton = findViewById(R.id.confirmBtn);
 
         //dölj de views som endast ska synas när timern är klar
         toggleInputFieldVisibility(false);
@@ -155,7 +155,7 @@ public class ExerciseActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void vibrate(){
 
-        //använder en vibrationeffect
+        
         Vibrator vibrator = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
         VibrationEffect vibrationEffect = VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE);
         vibrator.vibrate(vibrationEffect);
