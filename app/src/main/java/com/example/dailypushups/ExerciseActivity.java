@@ -2,7 +2,6 @@ package com.example.dailypushups;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Build;
@@ -10,28 +9,67 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class ExerciseActivity extends AppCompatActivity {
 
+    //dagens datum
     String todaysDate;
-    EditText numberOfPushupsET;
+
+    boolean timerRunning;
+    CountDownTimer countDownTimer;
+
+    //variabler för mina views (in order of appearance)
+    Button startTimerButton;
     TextView timerTxt;
+    EditText numberOfPushupsET;
+    TextView infoTxt;
+    Button confirmButton;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
+
+        timerRunning = false;
+
+        //hämta dagens datum
         todaysDate = LocalDate.now().toString();
 
+        //tilldela värden till view-variabler
+        startTimerButton = (Button) findViewById(R.id.startTimerBtn);
         timerTxt = (TextView) findViewById(R.id.timerTxt);
-        numberOfPushupsET = (EditText) findViewById(R.id.NumberOfPushpsTxt);
+        numberOfPushupsET = (EditText) findViewById(R.id.numberOfPushpsTxt);
+        infoTxt = (TextView) findViewById(R.id.infoTxt);
+        confirmButton = (Button) findViewById(R.id.ConfirmBtn);
+
+        //dölj de views som endast ska synas när timern är klar
+        toggleInputFieldVisibility(false);
+
+    }
+
+    public void toggleInputFieldVisibility(boolean show){
+
+        if(show){
+
+            infoTxt.setVisibility(View.VISIBLE);
+            numberOfPushupsET.setVisibility(View.VISIBLE);
+            confirmButton.setVisibility(View.VISIBLE);
+        }
+        else{
+
+            infoTxt.setVisibility(View.INVISIBLE);
+            numberOfPushupsET.setVisibility(View.INVISIBLE);
+            confirmButton.setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -71,22 +109,45 @@ public class ExerciseActivity extends AppCompatActivity {
 
     }
 
-    public void testShow(View view){
+    public void startTimer(View view){
 
-        new CountDownTimer(60000, 1000){
+        if(timerRunning){
 
-            @Override
-            public void onTick(long ms){
-                timerTxt.setText(String.valueOf("0:"+ms /1000));
-            }
-            @Override
-            public void onFinish(){
-                timerTxt.setText("0:00!!!");
-            }
+            countDownTimer.cancel();
+            timerRunning = false;
+            startTimerButton.setText("START TIMER");
+            timerTxt.setText("1:00");
 
+        }
 
-        }.start();
+        else{
 
+            timerRunning = true;
+            startTimerButton.setText("STOP TIMER");
+            toggleInputFieldVisibility(false);
+
+            countDownTimer = new CountDownTimer(60000, 1000) {
+
+                @Override
+                public void onTick(long ms) {
+                    if (ms / 1000 < 10) {
+
+                        timerTxt.setText(String.valueOf("0:0" + ms / 1000));
+                    } else {
+                        timerTxt.setText(String.valueOf("0:" + ms / 1000));
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    timerTxt.setText("0:00");
+                    toggleInputFieldVisibility(true);
+                    timerRunning = false;
+                    startTimerButton.setText("START TIMER");
+                }
+
+            }.start();
+        }
     }
 
 }

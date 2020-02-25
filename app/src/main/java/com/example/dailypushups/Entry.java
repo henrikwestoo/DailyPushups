@@ -7,6 +7,11 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "ENTRY")
 public class Entry {
 
+    public Entry(int pushups, String date){
+        this.pushups = pushups;
+        this.date = date;
+    }
+
     @PrimaryKey(autoGenerate = true)
     public int id;
 
