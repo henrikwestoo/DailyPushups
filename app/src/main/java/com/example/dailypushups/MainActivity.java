@@ -3,6 +3,8 @@ package com.example.dailypushups;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private EntryDatabase db;
     private String todaysDate;
 
+
     private TextView completedInfoTxt;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -26,26 +29,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        //alarmManager.cancel(pendingIntent);
+
+        long timer = 1000 * 60;
+        Log.d("tagalarm", String.valueOf(timer));
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, timer, pendingIntent);
+        Log.d("tag", "ALARM SET2  :d");
+
         todaysDate = LocalDate.now().toString();
         db = EntryDatabase.getDbInstance(this);
 
-        completedInfoTxt = (TextView) findViewById(R.id.completedInfoTxt);
+        completedInfoTxt = findViewById(R.id.completedInfoTxt);
 
         Entry entry;
 
-        if(dailyCompleted()){
+        if(!db.entryDao().getAll().isEmpty()) {
 
-            completedInfoTxt.setText("You have done your daily pushups!");
-            entry = db.entryDao().getNextToLatest();
+            if (dailyCompleted()) {
+
+                completedInfoTxt.setText("You have done your daily pushups!");
+                entry = db.entryDao().getNextToLatest();
+
+            } else {
+
+                entry = db.entryDao().getLatest();
+            }
+
+            TextView yesterdaysPushups = (TextView) findViewById(R.id.yesterdaysPushupsTxt);
+            yesterdaysPushups.setText(String.valueOf(entry.pushups));
 
         }
-        else{
-
-            entry = db.entryDao().getLatest();
-        }
-
-        TextView yesterdaysPushups = (TextView) findViewById(R.id.yesterdaysPushupsTxt);
-        yesterdaysPushups.setText(String.valueOf(entry.pushups));
 
     }
 
