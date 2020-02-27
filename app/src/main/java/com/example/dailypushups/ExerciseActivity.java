@@ -113,7 +113,7 @@ public class ExerciseActivity extends AppCompatActivity {
             countDownTimer.cancel();
             timerRunning = false;
             startTimerButton.setText("START TIMER");
-            timerTxt.setText("1:00");
+            timerTxt.setText("60");
 
         }
 
