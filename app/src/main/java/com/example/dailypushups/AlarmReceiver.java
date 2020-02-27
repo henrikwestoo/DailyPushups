@@ -35,7 +35,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         notificationManager.notify(1, builder.build());
 
 
-       Log.d("tag", "ALARM REGISTERED HEJHEJ2 :D");
+       Log.d("tag", "ALARM WAS TRIGGERED");
 
     }
 

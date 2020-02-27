@@ -8,18 +8,19 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private EntryDatabase db;
     private String todaysDate;
-
 
     private TextView completedInfoTxt;
 
@@ -29,18 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        //alarmManager.cancel(pendingIntent);
-
-        long timer = 1000 * 60;
-        Log.d("tagalarm", String.valueOf(timer));
-
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, timer, pendingIntent);
-        Log.d("tag", "ALARM SET2  :d");
+        AlarmCreator.setAlarm(this,1);
 
         todaysDate = LocalDate.now().toString();
         db = EntryDatabase.getDbInstance(this);

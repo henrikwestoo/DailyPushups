@@ -155,7 +155,6 @@ public class ExerciseActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void vibrate(){
 
-        
         Vibrator vibrator = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
         VibrationEffect vibrationEffect = VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE);
         vibrator.vibrate(vibrationEffect);
