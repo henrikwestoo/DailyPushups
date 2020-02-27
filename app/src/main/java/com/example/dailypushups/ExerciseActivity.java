@@ -84,27 +84,23 @@ public class ExerciseActivity extends AppCompatActivity {
 
             int numberOfPushupsInt = Integer.valueOf(numberOfPushups);
 
-            Log.d("tag", numberOfPushups);
+                // om det inte finns några entries med dagens datum gör vi en ny
+                if (db.entryDao().getSpecificEntry(todaysDate) == null) {
+                    Entry entry = new Entry(numberOfPushupsInt, todaysDate);
+                    db.entryDao().insertEntry(entry);
+                }
 
-            Log.d("tag", "insert started");
+                //annars ska den befintliga entryn uppdateras (endast som antalet
+                // armhävningar är större än det som redan registrerats)
+                else if((db.entryDao().getSpecificEntry(todaysDate).pushups < numberOfPushupsInt) ){
 
-            // om det inte finns några entries med dagens datum
-            if(db.entryDao().getSpecificEntry(todaysDate) == null) {
-                Entry entry = new Entry(numberOfPushupsInt, todaysDate);
-                db.entryDao().insertEntry(entry);
-            }
+                    db.entryDao().updateSpecificEntry(todaysDate, numberOfPushupsInt);
 
-            //annars ska entrien med dagens datum uppdateras
-            else{
+                }
 
-                db.entryDao().updateSpecificEntry(todaysDate, numberOfPushupsInt);
-
-            }
-
-            Log.d("tag", "insert finished");
-
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+                //vi går tillbaka till mainaktiviteten
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
 
         }
 
@@ -131,12 +127,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
                 @Override
                 public void onTick(long ms) {
-                    if (ms / 1000 < 10) {
-
-                        timerTxt.setText(String.valueOf("0:0" + ms / 1000));
-                    } else {
-                        timerTxt.setText(String.valueOf("0:" + ms / 1000));
-                    }
+                        timerTxt.setText(String.valueOf(ms / 1000));
                 }
 
                 @Override
