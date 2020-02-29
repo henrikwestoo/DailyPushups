@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.time.LocalDate;
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private String todaysDate;
 
     private TextView completedInfoTxt;
+    private Button startBtn;
+    private Button historyBtn;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -30,14 +33,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AlarmCreator.setAlarm(this,1);
+        //  AlarmCreator.setAlarm(this,1);
 
         todaysDate = LocalDate.now().toString();
         db = EntryDatabase.getDbInstance(this);
 
         completedInfoTxt = findViewById(R.id.completedInfoTxt);
+        historyBtn = findViewById(R.id.historyBtn);
 
         Entry entry;
+
+        List<Entry> test = db.entryDao().getAll();
 
         if(!db.entryDao().getAll().isEmpty()) {
 
@@ -53,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
 
             TextView yesterdaysPushups = (TextView) findViewById(R.id.yesterdaysPushupsTxt);
             yesterdaysPushups.setText(String.valueOf(entry.pushups));
+
+        }
+
+        //om du inte gjort fler än 1 entry kan du inte se din historik
+        if(!(db.entryDao().getAll().size() > 1)){
+
+            historyBtn.setVisibility(View.INVISIBLE);
 
         }
 

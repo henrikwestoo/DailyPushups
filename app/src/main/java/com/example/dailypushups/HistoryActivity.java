@@ -18,6 +18,7 @@ import java.text.Format;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
@@ -36,22 +37,37 @@ public class HistoryActivity extends AppCompatActivity {
         ArrayList <String> dates = new ArrayList<String>();
         ArrayList <Number> pushups = new ArrayList<Number>();
 
+        //ska lagra det högsta antalet armhävningar
+        int highestNumberOfPushups = 0;
+
         for(Entry entry : entries){
-            dates.add(entry.date);
+            dates.add(entry.date.substring(5));
             pushups.add(entry.pushups);
+            //det högsta antalet armhävningar räknas ut
+            if(entry.pushups > highestNumberOfPushups){highestNumberOfPushups = entry.pushups;}
         }
 
         final String[] domainLabels = dates.toArray(new String[0]);
-        //final String[] domainLabels = {"2020-02-28", "2020-02-29", "2020-02-30", "2020-02-31"};
         Number[] series1Numbers = pushups.toArray(new Number [0]);
-        //Number[] series1Numbers = {5, 7, 8, 10};
+
+        //vi använder det högsta antalet armhävningar för att räkna ut hur
+        //stora steg värdena på y axeln ska ta
+        int rangeStep = highestNumberOfPushups / 10;
+
+        //antalet labels ska vara lika stor som samlingen
+        int domainStep = domainLabels.length;
+
+        //...men inte fler än 8
+        if(domainStep > 8){
+            domainStep = 8;
+        }
 
         //plotinställningar
         plot = (XYPlot) findViewById(R.id.plot);
         //hur stora stegen ska vara på y axeln
-        plot.setRangeStep(StepMode.INCREMENT_BY_VAL, 2);
+        plot.setRangeStep(StepMode.INCREMENT_BY_VAL, rangeStep);
         //hur många labels det ska finnas på x axeln
-        plot.setDomainStepValue(domainLabels.length);
+        plot.setDomainStepValue(domainStep);
         //formattera värdena på y axeln
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.LEFT).setFormat(new DecimalFormat("0"));
         //rotera värdena på x axeln

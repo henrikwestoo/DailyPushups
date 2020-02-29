@@ -21,6 +21,8 @@ android {
 
 dependencies {
 
+    implementation "com.androidplot:androidplot-core:1.5.7"
+
     def room_version = "2.2.4"
 
     implementation "androidx.room:room-runtime:$room_version"

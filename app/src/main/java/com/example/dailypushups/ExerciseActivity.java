@@ -47,6 +47,13 @@ public class ExerciseActivity extends AppCompatActivity {
 
         db = EntryDatabase.getDbInstance(this);
 
+        //db.entryDao().deleteAllEntries();
+        addSampleData(2, 15, "2020-03-01");
+        addSampleData(2, 16,"2020-03-02");
+        addSampleData(2, 14,"2020-03-03");
+        addSampleData(2, 20,"2020-03-04");
+        addSampleData(2,27, "2020-03-05");
+
         //tilldela värden till view-variabler
         startTimerButton = findViewById(R.id.startTimerBtn);
         timerTxt = findViewById(R.id.timerTxt);
@@ -106,6 +113,17 @@ public class ExerciseActivity extends AppCompatActivity {
 
     }
 
+    public void addSampleData(int numberOfRows, int pushups, String date){
+
+        for(int i = 0; i < numberOfRows; i++){
+
+            db.entryDao().insertEntry(new Entry(pushups, date));
+
+        }
+
+
+    }
+
     public void startTimer(View view){
 
         if(timerRunning){
@@ -133,7 +151,7 @@ public class ExerciseActivity extends AppCompatActivity {
                 @Override
                 public void onFinish() {
                     vibrate();
-                    timerTxt.setText("0:00");
+                    timerTxt.setText("0");
                     toggleInputFieldVisibility(true);
                     timerRunning = false;
                     startTimerButton.setText("START TIMER");
