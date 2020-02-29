@@ -48,11 +48,8 @@ public class ExerciseActivity extends AppCompatActivity {
         db = EntryDatabase.getDbInstance(this);
 
         //db.entryDao().deleteAllEntries();
-        addSampleData(2, 15, "2020-03-01");
-        addSampleData(2, 16,"2020-03-02");
-        addSampleData(2, 14,"2020-03-03");
-        addSampleData(2, 20,"2020-03-04");
-        addSampleData(2,27, "2020-03-05");
+        //addSampleData(1, 15, "2020-02-28");
+        //addSampleData(1, 16, "2020-02-29");
 
         //tilldela värden till view-variabler
         startTimerButton = findViewById(R.id.startTimerBtn);

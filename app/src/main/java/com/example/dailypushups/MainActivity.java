@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //  AlarmCreator.setAlarm(this,1);
+        AlarmCreator.setAlarm(this,1140);
 
         todaysDate = LocalDate.now().toString();
         db = EntryDatabase.getDbInstance(this);
@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
         historyBtn = findViewById(R.id.historyBtn);
 
         Entry entry;
-
-        List<Entry> test = db.entryDao().getAll();
 
         if(!db.entryDao().getAll().isEmpty()) {
 
