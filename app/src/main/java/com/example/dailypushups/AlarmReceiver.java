@@ -13,12 +13,13 @@ import androidx.core.app.NotificationCompat;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
+    //bestämmer vad som händer när alarmet i AlarmCreator går igång
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context, Intent intent){
 
 
-        //skapa en notificationchannel som man behöver nuförtiden
+        //skapa en notificationchannel
         NotificationChannel channel = new NotificationChannel("channel-id", "notification-channel", NotificationManager.IMPORTANCE_DEFAULT);
 
         //skapa en notificationbuilder där jag anger kanal-idt
@@ -26,16 +27,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         //obligatoriska för notifikationen
         builder.setSmallIcon(R.drawable.ic_launcher_background);
-        builder.setContentTitle("Get massive");
+        builder.setContentTitle("DailyPushups");
         builder.setContentText("Have you done your pushups today?");
 
         //visa notifikationen
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
         notificationManager.notify(1, builder.build());
-
-
-       Log.d("tag", "ALARM WAS TRIGGERED");
 
     }
 

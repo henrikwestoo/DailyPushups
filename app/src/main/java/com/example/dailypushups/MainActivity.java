@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private String todaysDate;
 
     private TextView completedInfoTxt;
-    private Button startBtn;
     private Button historyBtn;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -33,34 +32,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //skapar ett alarm som kommer aktivera en notifikation som 24 timmar
         AlarmCreator.setAlarm(this,1140);
 
+        //vi behöver dagens datum för att ta fram förra gångens antal armhävningar
         todaysDate = LocalDate.now().toString();
+
         db = EntryDatabase.getDbInstance(this);
 
+        //variabler för views
         completedInfoTxt = findViewById(R.id.completedInfoTxt);
         historyBtn = findViewById(R.id.historyBtn);
 
         Entry entry;
-
+        //om databasen inte är tom vill vi uppvisa hur många armhävningar
+        //användaren gjorde förra gången
         if(!db.entryDao().getAll().isEmpty()) {
 
+            entry = db.entryDao().getLatest();
+
+            //om användaren har gjort armhävningar idag så ändras meddelandet
             if (dailyCompleted()) {
 
                 completedInfoTxt.setText("You have done your daily pushups!");
-                entry = db.entryDao().getNextToLatest();
-
-            } else {
-
-                entry = db.entryDao().getLatest();
             }
 
-            TextView yesterdaysPushups = (TextView) findViewById(R.id.yesterdaysPushupsTxt);
+            TextView yesterdaysPushups = findViewById(R.id.yesterdaysPushupsTxt);
             yesterdaysPushups.setText(String.valueOf(entry.pushups));
 
         }
 
         //om du inte gjort fler än 1 entry kan du inte se din historik
+        //detta eftersom grafen inte skulle bli så fin utan data
         if(!(db.entryDao().getAll().size() > 1)){
 
             historyBtn.setVisibility(View.INVISIBLE);
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //bunden till "start" knappen
     public void goToExercise(View view){
 
         Intent intent = new Intent(this, ExerciseActivity.class);
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //bunden till "history" knappen
     public void goToHistory(View view){
 
         Intent intent = new Intent(this, HistoryActivity.class);
@@ -83,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //kontrollerar om användaren gjort armhävningar idag
     public boolean dailyCompleted(){
 
         boolean completed = true;

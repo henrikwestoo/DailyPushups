@@ -14,12 +14,8 @@ public interface EntryDao {
     List<Entry> getAll();
 
     //hämtar den senaste entryn
-    @Query("SELECT * FROM ENTRY LIMIT 1")
+    @Query("SELECT * FROM ENTRY ORDER BY ID DESC LIMIT 1")
     Entry getLatest();
-
-    //hämtar den näst-senaste databasraden, dvs gårdagens antal armhävningar
-    @Query("SELECT * FROM (SELECT * FROM ENTRY ORDER BY ID DESC LIMIT 2) ORDER BY ID ASC LIMIT 1")
-    Entry getNextToLatest();
 
     //hämtar en specifik entry, används för att kontrollera om användaren
     //redan angett antalet armhävningar för en dag

@@ -13,13 +13,18 @@ public abstract class EntryDatabase extends RoomDatabase {
 
     private static final String DbName = "entry_db";
 
+    //används för att instansiera databasen
     public static EntryDatabase getDbInstance(Context context){
 
+        //Jag tillåter att databasoperationer sker i applikationens maintråd för enkelhetens skull
+        //hade jag använt större datamängder kunde detta orsakat problem i GUIn
         EntryDatabase db = Room.databaseBuilder(context, EntryDatabase.class, DbName).addMigrations().addMigrations(MIGRATION_1_2).allowMainThreadQueries().build();
         return db;
 
     }
 
+    //jag la till en kolumn efter att gjorde färdigt databasen
+    //därför krävdes en migration
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
@@ -28,7 +33,7 @@ public abstract class EntryDatabase extends RoomDatabase {
         }
     };
 
+    //används för att komma åt EntryDao
     public abstract EntryDao entryDao();
-
 
 }

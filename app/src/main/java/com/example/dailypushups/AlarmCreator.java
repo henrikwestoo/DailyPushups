@@ -14,6 +14,7 @@ import static android.content.Context.ALARM_SERVICE;
 
 public class AlarmCreator {
 
+    //startar ett "alarm" som går igång efter antalet minuter som anges
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void setAlarm(Context context, long minutes){
 
@@ -22,8 +23,8 @@ public class AlarmCreator {
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 
+        //ändra till set()?
         alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+1000 * 60 * minutes, pendingIntent);
-        Log.d("tag", "ALARM SET2  :d");
 
 
     }

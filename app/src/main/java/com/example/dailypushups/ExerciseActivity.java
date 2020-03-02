@@ -48,8 +48,7 @@ public class ExerciseActivity extends AppCompatActivity {
         db = EntryDatabase.getDbInstance(this);
 
         //db.entryDao().deleteAllEntries();
-        //addSampleData(1, 15, "2020-02-28");
-        //addSampleData(1, 16, "2020-02-29");
+        //addSampleData(1, 6, "2020-03-2");
 
         //tilldela värden till view-variabler
         startTimerButton = findViewById(R.id.startTimerBtn);
@@ -58,11 +57,11 @@ public class ExerciseActivity extends AppCompatActivity {
         infoTxt = findViewById(R.id.infoTxt);
         confirmButton = findViewById(R.id.confirmBtn);
 
-        //dölj de views som endast ska synas när timern är klar
         toggleInputFieldVisibility(false);
 
     }
 
+    //döljer eller visar de views som endast ska synas när timern är klar
     public void toggleInputFieldVisibility(boolean show){
 
         if(show){
@@ -80,10 +79,12 @@ public class ExerciseActivity extends AppCompatActivity {
 
     }
 
+    //sparar antalet som användaren angett i databasen
     public void saveToDb(View view){
 
         String numberOfPushups = numberOfPushupsET.getText().toString();
 
+        //kontrollerar att det är en integer som kommer in
         if(Validator.isInteger(numberOfPushups)) {
 
             int numberOfPushupsInt = Integer.valueOf(numberOfPushups);
@@ -94,7 +95,7 @@ public class ExerciseActivity extends AppCompatActivity {
                     db.entryDao().insertEntry(entry);
                 }
 
-                //annars ska den befintliga entryn uppdateras (endast som antalet
+                //annars ska den befintliga entryn uppdateras (endast om antalet
                 // armhävningar är större än det som redan registrerats)
                 else if((db.entryDao().getSpecificEntry(todaysDate).pushups < numberOfPushupsInt) ){
 
@@ -121,8 +122,11 @@ public class ExerciseActivity extends AppCompatActivity {
 
     }
 
+    //kopplat till "start timer" knappen
+    //sätter igång en timer på 60 sekunder
     public void startTimer(View view){
 
+        //om en timer redan körs stoppar vi den
         if(timerRunning){
 
             countDownTimer.cancel();
@@ -140,6 +144,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
             countDownTimer = new CountDownTimer(60000, 1000) {
 
+                //varje gång timern tickar uppdaterar vi texten
                 @Override
                 public void onTick(long ms) {
                         timerTxt.setText(String.valueOf(ms / 1000));
@@ -158,6 +163,7 @@ public class ExerciseActivity extends AppCompatActivity {
         }
     }
 
+    //när timern är slut vibrerar enheten
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void vibrate(){
 

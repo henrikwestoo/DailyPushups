@@ -30,7 +30,6 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_plot);
 
-        ArrayList<String> data = new ArrayList<>();
         EntryDatabase db = EntryDatabase.getDbInstance(this);
         List<Entry> entries =  db.entryDao().getAll();
 
@@ -44,11 +43,14 @@ public class HistoryActivity extends AppCompatActivity {
             dates.add(entry.date.substring(5));
             pushups.add(entry.pushups);
             //det högsta antalet armhävningar räknas ut
-            if(entry.pushups > highestNumberOfPushups){highestNumberOfPushups = entry.pushups;}
+            if(entry.pushups > highestNumberOfPushups)
+            {highestNumberOfPushups = entry.pushups;}
         }
 
+        //de datum som ska visas på x-axeln
         final String[] domainLabels = dates.toArray(new String[0]);
-        Number[] series1Numbers = pushups.toArray(new Number [0]);
+        //de tal som ska visas på y-axeln
+        Number[] pushupFigures = pushups.toArray(new Number [0]);
 
         //vi använder det högsta antalet armhävningar för att räkna ut hur
         //stora steg värdena på y axeln ska ta
@@ -64,21 +66,23 @@ public class HistoryActivity extends AppCompatActivity {
 
         //plotinställningar
         plot = (XYPlot) findViewById(R.id.plot);
-        //hur stora stegen ska vara på y axeln
+
         plot.setRangeStep(StepMode.INCREMENT_BY_VAL, rangeStep);
-        //hur många labels det ska finnas på x axeln
         plot.setDomainStepValue(domainStep);
+
         //formattera värdena på y axeln
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.LEFT).setFormat(new DecimalFormat("0"));
         //rotera värdena på x axeln
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setRotation(-90);
 
-        XYSeries series1 = new SimpleXYSeries(
-                Arrays.asList(series1Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Progress");
+        //själva linjen som representerar datan
+        XYSeries pushupLine = new SimpleXYSeries(
+                Arrays.asList(pushupFigures), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Progress");
 
-        LineAndPointFormatter series1Format = new LineAndPointFormatter(Color.BLUE, null, null, null);
+        //style för linjen
+        LineAndPointFormatter pushupLineFormat = new LineAndPointFormatter(Color.BLUE, null, null, null);
 
-        plot.addSeries(series1, series1Format);
+        plot.addSeries(pushupLine, pushupLineFormat);
 
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
             @Override
