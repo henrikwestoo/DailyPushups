@@ -17,7 +17,7 @@ public abstract class EntryDatabase extends RoomDatabase {
     public static EntryDatabase getDbInstance(Context context){
 
         //Jag tillåter att databasoperationer sker i applikationens maintråd för enkelhetens skull
-        //hade jag använt större datamängder kunde detta orsakat problem i GUIn
+        //hade jag använt större datamängder kunde detta resulterat i att GUIn hänger upp sig
         EntryDatabase db = Room.databaseBuilder(context, EntryDatabase.class, DbName).addMigrations().addMigrations(MIGRATION_1_2).allowMainThreadQueries().build();
         return db;
 
@@ -33,7 +33,7 @@ public abstract class EntryDatabase extends RoomDatabase {
         }
     };
 
-    //används för att komma åt EntryDao
+    //används för att komma åt EntryDaon, som vi använder för att kommunicera med databasen
     public abstract EntryDao entryDao();
 
 }

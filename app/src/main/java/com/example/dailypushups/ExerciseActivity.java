@@ -32,6 +32,7 @@ public class ExerciseActivity extends AppCompatActivity {
     private Button startTimerButton;
     private TextView timerTxt;
     private EditText numberOfPushupsET;
+    private TextView instructionsTxt;
     private TextView infoTxt;
     private Button confirmButton;
 
@@ -54,6 +55,7 @@ public class ExerciseActivity extends AppCompatActivity {
         startTimerButton = findViewById(R.id.startTimerBtn);
         timerTxt = findViewById(R.id.timerTxt);
         numberOfPushupsET = findViewById(R.id.numberOfPushpsTxt);
+        instructionsTxt = findViewById(R.id.instructionsTxt);
         infoTxt = findViewById(R.id.infoTxt);
         confirmButton = findViewById(R.id.confirmBtn);
 
@@ -66,12 +68,14 @@ public class ExerciseActivity extends AppCompatActivity {
 
         if(show){
 
+            instructionsTxt.setVisibility(View.INVISIBLE);
             infoTxt.setVisibility(View.VISIBLE);
             numberOfPushupsET.setVisibility(View.VISIBLE);
             confirmButton.setVisibility(View.VISIBLE);
         }
         else{
 
+            instructionsTxt.setVisibility(View.VISIBLE);
             infoTxt.setVisibility(View.INVISIBLE);
             numberOfPushupsET.setVisibility(View.INVISIBLE);
             confirmButton.setVisibility(View.INVISIBLE);
@@ -111,17 +115,6 @@ public class ExerciseActivity extends AppCompatActivity {
 
     }
 
-    public void addSampleData(int numberOfRows, int pushups, String date){
-
-        for(int i = 0; i < numberOfRows; i++){
-
-            db.entryDao().insertEntry(new Entry(pushups, date));
-
-        }
-
-
-    }
-
     //kopplat till "start timer" knappen
     //sätter igång en timer på 60 sekunder
     public void startTimer(View view){
@@ -133,6 +126,7 @@ public class ExerciseActivity extends AppCompatActivity {
             timerRunning = false;
             startTimerButton.setText("START TIMER");
             timerTxt.setText("60");
+            instructionsTxt.setVisibility(View.VISIBLE);
 
         }
 
@@ -141,6 +135,7 @@ public class ExerciseActivity extends AppCompatActivity {
             timerRunning = true;
             startTimerButton.setText("STOP TIMER");
             toggleInputFieldVisibility(false);
+            instructionsTxt.setVisibility(View.INVISIBLE);
 
             countDownTimer = new CountDownTimer(60000, 1000) {
 
@@ -150,6 +145,7 @@ public class ExerciseActivity extends AppCompatActivity {
                         timerTxt.setText(String.valueOf(ms / 1000));
                 }
 
+                //när timern når sitt slut
                 @Override
                 public void onFinish() {
                     vibrate();

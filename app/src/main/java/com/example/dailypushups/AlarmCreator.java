@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -22,12 +21,8 @@ public class AlarmCreator {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-
-        //ändra till set()?
         alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+1000 * 60 * minutes, pendingIntent);
 
-
     }
-
 
 }

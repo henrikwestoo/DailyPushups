@@ -18,7 +18,6 @@ import java.text.Format;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
@@ -65,15 +64,10 @@ public class HistoryActivity extends AppCompatActivity {
         }
 
         //plotinställningar
-        plot = (XYPlot) findViewById(R.id.plot);
+        plot = findViewById(R.id.plot);
 
         plot.setRangeStep(StepMode.INCREMENT_BY_VAL, rangeStep);
         plot.setDomainStepValue(domainStep);
-
-        //formattera värdena på y axeln
-        plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.LEFT).setFormat(new DecimalFormat("0"));
-        //rotera värdena på x axeln
-        plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setRotation(-90);
 
         //själva linjen som representerar datan
         XYSeries pushupLine = new SimpleXYSeries(
@@ -84,16 +78,21 @@ public class HistoryActivity extends AppCompatActivity {
 
         plot.addSeries(pushupLine, pushupLineFormat);
 
+        //formattera värdena på y axeln
+        plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.LEFT).setFormat(new DecimalFormat("0"));
+
+        //formatterar datumvärdena på x-axeln
+        plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setRotation(-90);
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
+            //returnerar ett formatterat datum
             @Override
-            public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+            public StringBuffer format(Object obj, StringBuffer stringBuffer, FieldPosition pos) {
+
                 int i = Math.round(((Number) obj).floatValue());
-
-                return toAppendTo.append(domainLabels[i]);
-
+                return stringBuffer.append(domainLabels[i]);
             }
             @Override
-            public Object parseObject(String source, ParsePosition pos) {
+            public Object parseObject(String sourceString, ParsePosition pos) {
                 return null;
             }
         });
