@@ -74,7 +74,8 @@ public class HistoryActivity extends AppCompatActivity {
                 Arrays.asList(pushupFigures), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Progress");
 
         //style för linjen
-        LineAndPointFormatter pushupLineFormat = new LineAndPointFormatter(Color.BLUE, null, null, null);
+        LineAndPointFormatter pushupLineFormat = new LineAndPointFormatter(Color.DKGRAY, null, null, null);
+        pushupLineFormat.getLinePaint().setStrokeWidth(8);
 
         plot.addSeries(pushupLine, pushupLineFormat);
 
@@ -84,13 +85,15 @@ public class HistoryActivity extends AppCompatActivity {
         //formatterar datumvärdena på x-axeln
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setRotation(-90);
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
-            //returnerar ett formatterat datum
+
+            //returnerar ett x-axelns datum
             @Override
             public StringBuffer format(Object obj, StringBuffer stringBuffer, FieldPosition pos) {
 
                 int i = Math.round(((Number) obj).floatValue());
                 return stringBuffer.append(domainLabels[i]);
             }
+            //denna metod måste override-as
             @Override
             public Object parseObject(String sourceString, ParsePosition pos) {
                 return null;

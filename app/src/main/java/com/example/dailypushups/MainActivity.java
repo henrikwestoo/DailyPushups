@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //skapar ett alarm som kommer aktivera en notifikation som 24 timmar
-        AlarmCreator.setAlarm(this,1140);
+        AlarmCreator.setAlarm(this,1440);
 
         //vi behöver dagens datum för att ta fram förra gångens antal armhävningar
         todaysDate = LocalDate.now().toString();
